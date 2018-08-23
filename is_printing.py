@@ -1,8 +1,12 @@
 #!/usr/bin/python3
 import requests
+import sys
 
 APIKEY = '81A811D2D4094037AD9C69411B1AC73F'
 r = requests.get('http://octopi.labs/api/printer', params={'exclude': 'temperature,sd'}, headers={"X-Api-Key": APIKEY})
+if not r.ok:
+    print(r.text)
+    sys.exit(1)
 state = r.json()['state']
 flags = state['flags']
 if flags['printing'] or flags['cancelling'] or flags['pausing'] or flags['paused']:
